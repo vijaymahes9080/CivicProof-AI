@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare, ShieldAlert, Calendar, TrendingUp, Lock } from 'lucide-react';
+import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare, ShieldAlert, Calendar, TrendingUp, Lock, CreditCard } from 'lucide-react';
 import { Language } from '../types';
 import { useTranslation } from '../locales/translations';
 
@@ -200,6 +200,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <GitCompare className="w-4 h-4 text-purple-600" />
               {language === 'ta' ? 'முடிவு மரம்' : 'Tree'}
+            </Link>
+
+            <Link
+              to="/dbt-check"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                isActive('/dbt-check')
+                  ? 'bg-civic-50 text-civic-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <CreditCard className="w-4 h-4 text-sky-600" />
+              {language === 'ta' ? 'DBT ஆதார்' : 'DBT Check'}
             </Link>
 
             <Link
