@@ -10,7 +10,8 @@ from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field, EmailStr
 
-from ...core.security import get_current_admin_user, log_audit_event, validate_outbound_url
+from ...core.security import log_audit_event, validate_outbound_url
+from .auth import get_current_admin
 
 router = APIRouter(prefix="/feedback", tags=["Evidence Feedback & Corrections"])
 
@@ -84,7 +85,7 @@ async def submit_evidence_correction(payload: EvidenceCorrectionSubmission):
 
 @router.get("/submissions", response_model=List[SubmissionRecord])
 async def list_feedback_submissions(
-    current_admin=Depends(get_current_admin_user)
+    current_admin=Depends(get_current_admin)
 ):
     """Admin-only endpoint to review pending public evidence submissions."""
     return FEEDBACK_STORE
@@ -94,7 +95,7 @@ async def list_feedback_submissions(
 async def review_submission(
     submission_id: str,
     action: str = "APPROVE",  # APPROVE or REJECT
-    current_admin=Depends(get_current_admin_user)
+    current_admin=Depends(get_current_admin)
 ):
     """Admin endpoint to approve or reject evidence correction."""
     target = next((s for s in FEEDBACK_STORE if s.id == submission_id), None)

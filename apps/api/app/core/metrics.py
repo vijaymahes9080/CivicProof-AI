@@ -7,6 +7,7 @@ import time
 from typing import Callable
 from fastapi import Request, Response
 from prometheus_client import (
+    CollectorRegistry,
     Counter,
     Histogram,
     Gauge,
@@ -14,11 +15,14 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
+civicproof_registry = CollectorRegistry()
+
 # HTTP Request Metrics
 HTTP_REQUESTS_TOTAL = Counter(
     "civicproof_http_requests_total",
     "Total HTTP requests received by CivicProof API",
     ["method", "handler", "status_code"],
+    registry=civicproof_registry,
 )
 
 HTTP_REQUEST_DURATION = Histogram(
@@ -26,11 +30,13 @@ HTTP_REQUEST_DURATION = Histogram(
     "HTTP request latency in seconds",
     ["method", "handler"],
     buckets=(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0),
+    registry=civicproof_registry,
 )
 
 ACTIVE_REQUESTS = Gauge(
     "civicproof_active_requests",
     "Number of concurrent active HTTP requests",
+    registry=civicproof_registry,
 )
 
 # Business & Civic Intelligence Metrics
@@ -38,23 +44,27 @@ ELIGIBILITY_EVALUATIONS_TOTAL = Counter(
     "civicproof_eligibility_evaluations_total",
     "Total deterministic eligibility rule evaluations performed",
     ["scheme_id", "is_eligible"],
+    registry=civicproof_registry,
 )
 
 PII_REDACTIONS_TOTAL = Counter(
     "civicproof_pii_redactions_total",
     "Total PII entities sanitized and redacted",
     ["entity_type"],
+    registry=civicproof_registry,
 )
 
 FRAUD_SCANS_TOTAL = Counter(
     "civicproof_fraud_scans_total",
     "Total scholarship phishing and fraud scans evaluated",
     ["verdict"],
+    registry=civicproof_registry,
 )
 
 SOURCE_REGISTRY_COUNT = Gauge(
     "civicproof_registered_sources_count",
     "Total verified official government sources currently registered",
+    registry=civicproof_registry,
 )
 
 
@@ -88,4 +98,4 @@ async def metrics_middleware(request: Request, call_next: Callable) -> Response:
 
 def get_metrics_response() -> Response:
     """Generate Prometheus metric scrape output."""
-    return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    return Response(content=generate_latest(civicproof_registry), media_type=CONTENT_TYPE_LATEST)

@@ -12,6 +12,8 @@ PHISHING_PATTERNS = [
     (re.compile(r'\.xyz|\.top|\.club|\.online|\.site|\.free|\.tk|\.ga|\.biz', re.IGNORECASE), "Suspicious top-level domain. Official portals strictly use .gov.in, .nic.in, or .ac.in.", "CRITICAL")
 ]
 
+URL_REGEX = re.compile(r'https?://[^\s,;"\'<>]+', re.IGNORECASE)
+
 
 def scan_scholarship_message(text_or_url: str) -> Dict[str, Any]:
     """
@@ -20,14 +22,14 @@ def scan_scholarship_message(text_or_url: str) -> Dict[str, Any]:
     flags: List[Dict[str, str]] = []
     risk_score = 0  # 0 to 100
 
-    # Domain check if URL
-    if "http://" in text_or_url or "https://" in text_or_url:
-        is_safe = is_domain_allowed(text_or_url)
-        if not is_safe:
+    # Extract all URLs in text
+    found_urls = URL_REGEX.findall(text_or_url)
+    for url in found_urls:
+        if not is_domain_allowed(url):
             flags.append({
                 "severity": "CRITICAL",
-                "indicator": "Unverified Non-Government Domain",
-                "explanation": "This URL does not belong to the authorized Indian Government allow-list (.gov.in / .nic.in)."
+                "indicator": f"Unverified Domain: {url}",
+                "explanation": "This URL does not belong to the authorized Indian Government allow-list (.gov.in / .nic.in / .ac.in)."
             })
             risk_score += 60
 
