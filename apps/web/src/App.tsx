@@ -14,6 +14,7 @@ import { ComparePage } from './pages/ComparePage';
 import { FraudScannerPage } from './pages/FraudScannerPage';
 import { DeadlinesPage } from './pages/DeadlinesPage';
 import { BenefitCalculatorPage } from './pages/BenefitCalculatorPage';
+import { IntegrityCheckPage } from './pages/IntegrityCheckPage';
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
@@ -40,6 +41,7 @@ export const App: React.FC = () => {
             <Route path="/fraud-check" element={<FraudScannerPage language={language} />} />
             <Route path="/deadlines" element={<DeadlinesPage language={language} />} />
             <Route path="/calculator" element={<BenefitCalculatorPage language={language} />} />
+            <Route path="/doc-verify" element={<IntegrityCheckPage language={language} />} />
             <Route path="/admin" element={<AdminReviewPage language={language} />} />
           </Routes>
         </main>
