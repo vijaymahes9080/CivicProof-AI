@@ -1,0 +1,13 @@
+{
+    "name": "vijaymahes/civicproof-ai",
+    "description": "CivicProof-AI Platform",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vijay Mahes",
+            "email": "Vijaypradhap2004@gmail.com"
+        }
+    ],
+    "require": {}
+}
