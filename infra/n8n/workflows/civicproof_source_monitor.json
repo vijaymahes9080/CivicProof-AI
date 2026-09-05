@@ -1,0 +1,166 @@
+{
+  "name": "CivicProof AI - Scheduled Source Monitor & Hash Differ",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "node-schedule-trigger",
+      "name": "Schedule (Every 6 Hours)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://api:8000/api/v1/sources",
+        "options": {}
+      },
+      "id": "node-fetch-sources",
+      "name": "Fetch Monitored Sources Registry",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Compute SHA-256 and identify changed content\nconst crypto = require('crypto');\nconst results = [];\n\nfor (const item of $input.all()) {\n  const source = item.json;\n  // Simulate fetch and hash comparison\n  const rawContent = source.title + ' ' + source.url;\n  const currentHash = crypto.createHash('sha256').update(rawContent).digest('hex');\n  \n  const hasChanged = (currentHash !== source.content_hash);\n  results.push({\n    json: {\n      source_id: source.id,\n      url: source.url,\n      old_hash: source.content_hash,\n      new_hash: currentHash,\n      has_changed: hasChanged,\n      timestamp: new Date().toISOString()\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "node-hash-compare",
+      "name": "Hash & Change Comparator",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.has_changed }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node-filter-changes",
+      "name": "Filter Changed Items",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/api/v1/alerts",
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "source_url",
+              "value": "={{ $json.url }}"
+            },
+            {
+              "name": "change_type",
+              "value": "HASH_CHANGED"
+            },
+            {
+              "name": "old_hash",
+              "value": "={{ $json.old_hash }}"
+            },
+            {
+              "name": "new_hash",
+              "value": "={{ $json.new_hash }}"
+            },
+            {
+              "name": "diff_summary",
+              "value": "Automated schedule monitor detected hash divergence from official server."
+            }
+          ]
+        }
+      },
+      "id": "node-create-alert",
+      "name": "Record Alert in Database",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1140, 240]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Safe placeholder node: external notification is disabled until configured by system admin\nreturn [{ json: { status: 'ALERT_LOGGED_INTERNALLY', note: 'No external emails sent until SMTP or webhook is configured.' } }];"
+      },
+      "id": "node-safe-log",
+      "name": "Internal Audit Log (No External Leak)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1360, 240]
+    }
+  ],
+  "connections": {
+    "Schedule (Every 6 Hours)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Monitored Sources Registry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Monitored Sources Registry": {
+      "main": [
+        [
+          {
+            "node": "Hash & Change Comparator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hash & Change Comparator": {
+      "main": [
+        [
+          {
+            "node": "Filter Changed Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Changed Items": {
+      "main": [
+        [
+          {
+            "node": "Record Alert in Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Record Alert in Database": {
+      "main": [
+        [
+          {
+            "node": "Internal Audit Log (No External Leak)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

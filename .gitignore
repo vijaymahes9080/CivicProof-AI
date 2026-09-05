@@ -1,7 +1,11 @@
 /vendor/
 node_modules/
+dist/
 .env
 .env.local
 *.log
+*.db
+.pytest_cache/
+__pycache__/
 .DS_Store
 Thumbs.db

@@ -1,0 +1,62 @@
+name: CivicProof AI CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-and-security:
+    name: Backend, Security & MCP Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/api/requirements.txt
+
+      - name: Run Pytest Suite (Unit, Security, Integration, MCP, E2E)
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./test.db
+        run: |
+          pytest -v --tb=short tests/
+
+      - name: Run 30-Question Benchmark Evaluation
+        run: |
+          python -m services.evaluation.runner
+
+  frontend-check:
+    name: Frontend Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: apps/web/package.json
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd apps/web
+          npm ci
+
+      - name: Typecheck and Build Web App
+        run: |
+          cd apps/web
+          npm run build
