@@ -1,0 +1,17 @@
+{
+  "short_name": "CivicProof",
+  "name": "CivicProof AI - Indian Government Scholarship Assistant",
+  "icons": [
+    {
+      "src": "vite.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#0252a1",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["education", "government", "utilities"]
+}
