@@ -1,0 +1,9 @@
+apiVersion: v2
+name: civicproof-ai
+description: Production Helm Chart for CivicProof AI - Evidence-Grounded Public Service Assistant
+type: application
+version: 1.1.0
+appVersion: "1.1.0"
+maintainers:
+  - name: Vijay Mahes
+    email: Vijaypradhap2004@gmail.com
