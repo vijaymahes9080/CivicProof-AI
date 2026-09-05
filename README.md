@@ -7,6 +7,7 @@
 
 ![CivicProof AI Light Theme Banner](docs/assets/hero_banner_light.jpg)
 
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-2ea44f?logo=github)](https://vijaymahes9080.github.io/CivicProof-AI/)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![React 18/19](https://img.shields.io/badge/React-18%2F19-61dafb?logo=react)](https://react.dev/)
@@ -19,6 +20,10 @@
 [![Grafana](https://img.shields.io/badge/Grafana-Monitoring-f46800?logo=grafana)](https://grafana.com/)
 [![MCP SDK](https://img.shields.io/badge/MCP-Protocol_v1.0-orange)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+<br/>
+
+👉 **[Launch Live Web Application](https://vijaymahes9080.github.io/CivicProof-AI/)**
 
 </div>
 
