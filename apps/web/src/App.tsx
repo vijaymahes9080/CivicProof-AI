@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Language } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { AccessibilityToolbar } from './components/AccessibilityToolbar';
 import { LandingPage } from './pages/LandingPage';
 import { DiscoveryChatPage } from './pages/DiscoveryChatPage';
 import { EligibilityWizardPage } from './pages/EligibilityWizardPage';
@@ -59,6 +60,7 @@ export const App: React.FC = () => {
             <Route path="/admin" element={<AdminReviewPage language={language} />} />
           </Routes>
         </main>
+        <AccessibilityToolbar language={language} />
         <Footer language={language} />
       </div>
     </Router>

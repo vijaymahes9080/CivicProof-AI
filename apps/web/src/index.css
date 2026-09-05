@@ -8,6 +8,42 @@
   }
 }
 
+/* Accessibility & High Contrast Modes */
+body.high-contrast-mode {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+body.high-contrast-mode * {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast-mode a,
+body.high-contrast-mode button {
+  color: #00ffff !important;
+  text-decoration: underline !important;
+}
+
+body.highlight-links-mode a {
+  background-color: #fef08a !important;
+  color: #1e1b4b !important;
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+  padding: 0 4px !important;
+  border-radius: 4px !important;
+}
+
+body.dyslexic-mode {
+  font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif !important;
+  letter-spacing: 0.08em !important;
+  word-spacing: 0.15em !important;
+  line-height: 1.8 !important;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
