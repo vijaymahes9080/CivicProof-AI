@@ -26,7 +26,12 @@ OFFICIAL_GOVERNMENT_DOMAINS = [
     "education.gov.in",
     "socialjustice.gov.in",
     "tribal.nic.in",
-    "minorityaffairs.gov.in"
+    "minorityaffairs.gov.in",
+    "karnataka.gov.in",
+    "kerala.gov.in",
+    "ap.gov.in",
+    "maharashtra.gov.in",
+    "up.gov.in"
 ]
 
 ALLOWED_DOMAIN_SUFFIXES = [
