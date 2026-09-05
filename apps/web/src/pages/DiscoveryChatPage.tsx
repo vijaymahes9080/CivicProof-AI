@@ -10,12 +10,17 @@ import {
   HelpCircle, 
   ArrowRight,
   RefreshCw,
-  FileText
+  FileText,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { Language, AssistantResponse, Citation, SchemeSummary } from '../types';
 import { useTranslation } from '../locales/translations';
 import { api } from '../services/api';
 import { CitationDrawer } from '../components/CitationDrawer';
+import { useVoiceAssistant } from '../hooks/useVoiceAssistant';
 
 export const DiscoveryChatPage: React.FC<{ language: Language; plainLanguage: boolean }> = ({
   language,
@@ -34,6 +39,17 @@ export const DiscoveryChatPage: React.FC<{ language: Language; plainLanguage: bo
   // Citation Drawer state
   const [selectedCitation, setSelectedCitation] = useState<Citation | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Voice Assistant Hook
+  const { isListening, isSpeaking, supported: voiceSupported, startListening, speakText, stopSpeaking } = useVoiceAssistant(language);
+
+  const handleMicClick = () => {
+    if (isListening) return;
+    startListening((spokenText) => {
+      setInputQuery(spokenText);
+      handleAsk(spokenText);
+    });
+  };
 
   useEffect(() => {
     api.listSchemes().then(setSchemes).catch(console.error);
@@ -127,23 +143,39 @@ export const DiscoveryChatPage: React.FC<{ language: Language; plainLanguage: bo
               <span>PII is automatically scrubbed before processing</span>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading || !inputQuery.trim()}
-              className="px-5 py-2.5 bg-civic-600 hover:bg-civic-700 disabled:bg-slate-300 text-white font-semibold text-sm rounded-xl transition-all shadow-md shadow-civic-600/20 flex items-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Searching Official Gazettes...</span>
-                </>
-              ) : (
-                <>
-                  <span>Ask Assistant</span>
-                  <Send className="w-4 h-4" />
-                </>
-              )}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleMicClick}
+                disabled={loading}
+                title={isListening ? "Listening..." : "Speak Query (Voice Input)"}
+                className={`p-2.5 rounded-xl border transition-all ${
+                  isListening
+                    ? 'bg-rose-500 text-white border-rose-600 animate-pulse'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200'
+                }`}
+              >
+                {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4 text-civic-700" />}
+              </button>
+
+              <button
+                type="submit"
+                disabled={loading || !inputQuery.trim()}
+                className="px-5 py-2.5 bg-civic-600 hover:bg-civic-700 disabled:bg-slate-300 text-white font-semibold text-sm rounded-xl transition-all shadow-md shadow-civic-600/20 flex items-center gap-2"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Searching Official Gazettes...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Ask Assistant</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -197,8 +229,17 @@ export const DiscoveryChatPage: React.FC<{ language: Language; plainLanguage: bo
               )}
             </div>
 
-            <div className="text-xs text-slate-500 font-medium flex items-center gap-2">
-              <span>Grounded Confidence:</span>
+            <div className="text-xs text-slate-500 font-medium flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => isSpeaking ? stopSpeaking() : speakText(response.answer)}
+                className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-1 font-semibold transition-colors"
+                title="Read answer aloud (Text to Speech)"
+              >
+                {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-rose-600" /> : <Volume2 className="w-3.5 h-3.5 text-civic-600" />}
+                <span>{isSpeaking ? "Stop" : "Listen"}</span>
+              </button>
+              <span>Grounded:</span>
               <span className="font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">
                 {(response.confidence_score * 100).toFixed(0)}%
               </span>
