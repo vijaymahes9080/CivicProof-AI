@@ -11,6 +11,7 @@ import { SourceRegistryPage } from './pages/SourceRegistryPage';
 import { UpdateHistoryPage } from './pages/UpdateHistoryPage';
 import { AdminReviewPage } from './pages/AdminReviewPage';
 import { ComparePage } from './pages/ComparePage';
+import { FraudScannerPage } from './pages/FraudScannerPage';
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
@@ -34,6 +35,7 @@ export const App: React.FC = () => {
             <Route path="/sources" element={<SourceRegistryPage language={language} />} />
             <Route path="/updates" element={<UpdateHistoryPage language={language} />} />
             <Route path="/compare" element={<ComparePage language={language} />} />
+            <Route path="/fraud-check" element={<FraudScannerPage language={language} />} />
             <Route path="/admin" element={<AdminReviewPage language={language} />} />
           </Routes>
         </main>

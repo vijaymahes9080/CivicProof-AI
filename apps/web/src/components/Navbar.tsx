@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare } from 'lucide-react';
+import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare, ShieldAlert } from 'lucide-react';
 import { Language } from '../types';
 import { useTranslation } from '../locales/translations';
 
@@ -116,6 +116,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <GitCompare className="w-4 h-4" />
               {language === 'ta' ? 'திட்ட ஒப்பீடு' : 'Compare'}
+            </Link>
+
+            <Link
+              to="/fraud-check"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                isActive('/fraud-check')
+                  ? 'bg-rose-50 text-rose-700 font-semibold'
+                  : 'text-slate-600 hover:text-rose-700 hover:bg-rose-50/50'
+              }`}
+            >
+              <ShieldAlert className="w-4 h-4 text-rose-500" />
+              {language === 'ta' ? 'மோசடி சரிபார்ப்பு' : 'Fraud Alert'}
             </Link>
 
             <Link
