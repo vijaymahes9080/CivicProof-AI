@@ -1,11 +1,10 @@
-"""
-CivicProof AI - Evaluation Benchmark Runner
+"""CivicProof AI - Evaluation Benchmark Runner (v1 & v2 Multi-State Support).
 """
 import json
 import time
 import os
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 # Ensure apps and packages are importable
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages")))
@@ -15,23 +14,31 @@ from shared.models import Language
 from app.llm.assistant import grounded_assistant
 from app.eligibility.engine import evaluate_citizen_eligibility
 from shared.models import CitizenProfile
-from .metrics import (
-    compute_citation_precision_and_recall,
-    compute_answer_faithfulness,
-    check_pii_leak,
-    MetricEvaluationResult
-)
+try:
+    from .metrics import (
+        compute_citation_precision_and_recall,
+        compute_answer_faithfulness,
+        check_pii_leak,
+        MetricEvaluationResult
+    )
+except ImportError:
+    from metrics import (
+        compute_citation_precision_and_recall,
+        compute_answer_faithfulness,
+        check_pii_leak,
+        MetricEvaluationResult
+    )
 
 
-def load_benchmark_dataset() -> List[Dict[str, Any]]:
-    path = os.path.join(os.path.dirname(__file__), "dataset", "benchmark_questions.json")
+def load_benchmark_dataset(filename: str = "benchmark_questions.json") -> List[Dict[str, Any]]:
+    path = os.path.join(os.path.dirname(__file__), "dataset", filename)
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def run_benchmark_evaluation() -> MetricEvaluationResult:
-    dataset = load_benchmark_dataset()
-    print(f"Loaded {len(dataset)} benchmark test cases.")
+def run_benchmark_evaluation(dataset_file: str = "benchmark_questions.json") -> MetricEvaluationResult:
+    dataset = load_benchmark_dataset(dataset_file)
+    print(f"Loaded {len(dataset)} benchmark test cases from {dataset_file}.")
 
     total_precision = 0.0
     total_recall = 0.0
@@ -46,9 +53,9 @@ def run_benchmark_evaluation() -> MetricEvaluationResult:
     for item in dataset:
         q_id = item["id"]
         cat = item["category"]
-        query = item["query"]
+        query = item.get("query") or item.get("question")
         lang = Language.TA if item["language"] == "ta" else Language.EN
-        expected_src = item.get("expected_source_id")
+        expected_src = item.get("expected_source_id") or item.get("ground_truth_citation_id")
         expected_kw = item.get("expected_answer_contains", [])
 
         if cat not in cat_stats:
@@ -127,7 +134,8 @@ def run_benchmark_evaluation() -> MetricEvaluationResult:
     print("\n==========================================")
     print("CIVICPROOF AI BENCHMARK EVALUATION RESULTS")
     print("==========================================")
-    print(f"Total Test Cases Evaluated : {res.total_evaluated}")
+    print(f"Dataset File              : {dataset_file}")
+    print(f"Total Test Cases Evaluated: {res.total_evaluated}")
     print(f"Citation Precision        : {res.citation_precision * 100}%")
     print(f"Citation Recall           : {res.citation_recall * 100}%")
     print(f"Answer Faithfulness       : {res.answer_faithfulness * 100}%")
@@ -145,4 +153,5 @@ def run_benchmark_evaluation() -> MetricEvaluationResult:
 
 
 if __name__ == "__main__":
-    run_benchmark_evaluation()
+    dataset_to_run = sys.argv[1] if len(sys.argv) > 1 else "benchmark_questions.json"
+    run_benchmark_evaluation(dataset_to_run)
