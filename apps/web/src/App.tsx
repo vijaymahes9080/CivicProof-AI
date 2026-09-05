@@ -21,6 +21,7 @@ import { DecisionTreePage } from './pages/DecisionTreePage';
 import { DbtDiagnosticPage } from './pages/DbtDiagnosticPage';
 import { FirstGraduateGuidePage } from './pages/FirstGraduateGuidePage';
 import { CommunityMatrixPage } from './pages/CommunityMatrixPage';
+import { NspGuidePage } from './pages/NspGuidePage';
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
@@ -54,6 +55,7 @@ export const App: React.FC = () => {
             <Route path="/dbt-check" element={<DbtDiagnosticPage language={language} />} />
             <Route path="/first-graduate" element={<FirstGraduateGuidePage language={language} />} />
             <Route path="/community-matrix" element={<CommunityMatrixPage language={language} />} />
+            <Route path="/nsp-guide" element={<NspGuidePage language={language} />} />
             <Route path="/admin" element={<AdminReviewPage language={language} />} />
           </Routes>
         </main>
