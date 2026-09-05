@@ -25,6 +25,7 @@ import { CommunityMatrixPage } from './pages/CommunityMatrixPage';
 import { NspGuidePage } from './pages/NspGuidePage';
 import { GrievancePage } from './pages/GrievancePage';
 import { GlossaryPage } from './pages/GlossaryPage';
+import { SavedBookmarksPage } from './pages/SavedBookmarksPage';
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
@@ -61,6 +62,7 @@ export const App: React.FC = () => {
             <Route path="/nsp-guide" element={<NspGuidePage language={language} />} />
             <Route path="/grievance" element={<GrievancePage language={language} />} />
             <Route path="/glossary" element={<GlossaryPage language={language} />} />
+            <Route path="/saved" element={<SavedBookmarksPage language={language} />} />
             <Route path="/admin" element={<AdminReviewPage language={language} />} />
           </Routes>
         </main>
