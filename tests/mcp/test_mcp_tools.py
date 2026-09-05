@@ -1,5 +1,4 @@
-"""
-MCP Tool Contract Tests
+"""MCP Tool Contract Tests (11 Tools).
 """
 from services.mcp_server.schemas import (
     SearchOfficialSourcesInput,
@@ -8,9 +7,13 @@ from services.mcp_server.schemas import (
     EvaluateEligibilityInput,
     GenerateDocumentChecklistInput,
     VerifyApplicationLinkInput,
-    CreateUpdateAlertInput
+    CreateUpdateAlertInput,
+    CompareSchemesInput,
+    CalculateBenefitQuantumInput,
+    ScanPhishingScholarshipInput,
+    LocateDistrictOfficeInput
 )
-from services.mcp_server.tools import MCPToolExecutor
+from services.mcp_server.executor import MCPToolExecutor
 
 
 def test_mcp_search_official_sources():
@@ -62,3 +65,45 @@ def test_mcp_create_update_alert():
     out = MCPToolExecutor.create_update_alert(inp)
     assert out.status == "REGISTERED"
     assert out.alert_id.startswith("alert-")
+
+
+def test_mcp_compare_schemes():
+    inp = CompareSchemesInput(
+        scheme_a_id="scheme-nsp-csss",
+        scheme_b_id="scheme-tn-pudhumai-penn"
+    )
+    out = MCPToolExecutor.compare_schemes(inp)
+    assert out.scheme_a.id == "scheme-nsp-csss"
+    assert out.scheme_b.id == "scheme-tn-pudhumai-penn"
+    assert "Comparing" in out.comparison_summary
+
+
+def test_mcp_calculate_benefit_quantum():
+    inp = CalculateBenefitQuantumInput(
+        scheme_id="scheme-tn-pudhumai-penn",
+        course_duration_years=3,
+        is_hosteller=False,
+        tuition_fee_per_year=0.0
+    )
+    out = MCPToolExecutor.calculate_benefit_quantum(inp)
+    assert out.total_annual_benefit == 12000.0
+    assert out.grand_total_course_benefit == 36000.0
+    assert len(out.breakdown_by_year) == 3
+
+
+def test_mcp_scan_phishing_scholarship():
+    inp = ScanPhishingScholarshipInput(
+        text_or_url="Pay registration fee of Rs. 500 on WhatsApp to get guaranteed scholarship approval"
+    )
+    out = MCPToolExecutor.scan_phishing_scholarship(inp)
+    assert out.is_suspicious is True
+    assert out.risk_score >= 40
+    assert out.flags_count >= 2
+
+
+def test_mcp_locate_district_welfare_office():
+    inp = LocateDistrictOfficeInput(district_name="Chennai")
+    out = MCPToolExecutor.locate_district_welfare_office(inp)
+    assert out.match_found is True
+    assert len(out.results) > 0
+    assert "Singaravelar" in out.results[0].collectorate_address

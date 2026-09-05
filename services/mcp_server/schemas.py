@@ -107,3 +107,24 @@ class CreateUpdateAlertOutput(BaseModel):
     scheme_id: str
     status: str
     message: str
+
+
+class CompareSchemesInput(BaseModel):
+    scheme_a_id: str = Field(..., description="ID of Scheme A (e.g. 'scheme-nsp-csss')")
+    scheme_b_id: str = Field(..., description="ID of Scheme B (e.g. 'scheme-tn-pudhumai-penn')")
+
+
+class CalculateBenefitQuantumInput(BaseModel):
+    scheme_id: str = Field(..., description="Scheme ID to calculate financial quantum for")
+    course_duration_years: int = Field(default=3, description="Course duration in years (e.g. 3 for BSc/BA, 4 for BTech)")
+    is_hosteller: bool = Field(default=False, description="Whether student resides in hostel")
+    tuition_fee_per_year: float = Field(default=25000.0, description="Annual tuition fee charged by college")
+
+
+class ScanPhishingScholarshipInput(BaseModel):
+    text_or_url: str = Field(..., min_length=5, description="Suspicious scholarship message, SMS text, or website URL to scan")
+
+
+class LocateDistrictOfficeInput(BaseModel):
+    district_name: str = Field(..., description="District name (e.g. 'Chennai', 'Madurai', 'Coimbatore')")
+
