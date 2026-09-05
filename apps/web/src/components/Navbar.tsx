@@ -179,6 +179,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             </Link>
 
             <Link
+              to="/districts"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                isActive('/districts')
+                  ? 'bg-civic-50 text-civic-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <Globe className="w-4 h-4 text-emerald-600" />
+              {language === 'ta' ? 'மாவட்ட அலுவலர்கள்' : 'Districts'}
+            </Link>
+
+            <Link
               to="/admin"
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
                 isActive('/admin')
