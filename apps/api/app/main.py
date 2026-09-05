@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 from .core.config import settings
 from .db.session import init_db
 from .api.routers import auth, schemes, assistant, eligibility, checklist, sources, alerts, health, institutions
+from .core.metrics import metrics_middleware, get_metrics_response
 
 # Configure Logging
 logging.basicConfig(
@@ -59,8 +60,11 @@ async def add_security_headers_and_timing(request: Request, call_next):
     response.headers["X-Process-Time-Ms"] = str(round(process_time, 2))
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
-    response.headers["Content-Security-Policy"] = "default-src 'self'"
     return response
+
+
+app.middleware("http")(metrics_middleware)
+
 
 
 # Include API Routers
@@ -83,6 +87,12 @@ async def root():
         "docs_url": "/docs",
         "standards": "Evidence-grounded, Privacy-preserving, Bilingual (EN/TA)"
     }
+
+
+@app.get("/metrics")
+async def metrics():
+    """Prometheus metrics scrape endpoint."""
+    return get_metrics_response()
 
 
 if __name__ == "__main__":
