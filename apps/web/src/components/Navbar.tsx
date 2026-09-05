@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles } from 'lucide-react';
+import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare } from 'lucide-react';
 import { Language } from '../types';
 import { useTranslation } from '../locales/translations';
 
@@ -104,6 +104,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <History className="w-4 h-4" />
               {t('update_history')}
+            </Link>
+
+            <Link
+              to="/compare"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                isActive('/compare')
+                  ? 'bg-civic-50 text-civic-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <GitCompare className="w-4 h-4" />
+              {language === 'ta' ? 'திட்ட ஒப்பீடு' : 'Compare'}
             </Link>
 
             <Link
