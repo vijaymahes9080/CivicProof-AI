@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare, ShieldAlert } from 'lucide-react';
+import { ShieldCheck, Globe, BookOpen, Calculator, FileCheck, Database, History, UserCheck, Sparkles, GitCompare, ShieldAlert, Calendar } from 'lucide-react';
 import { Language } from '../types';
 import { useTranslation } from '../locales/translations';
 
@@ -128,6 +128,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <ShieldAlert className="w-4 h-4 text-rose-500" />
               {language === 'ta' ? 'மோசடி சரிபார்ப்பு' : 'Fraud Alert'}
+            </Link>
+
+            <Link
+              to="/deadlines"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                isActive('/deadlines')
+                  ? 'bg-civic-50 text-civic-700 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <Calendar className="w-4 h-4" />
+              {language === 'ta' ? 'நாட்காட்டி' : 'Deadlines'}
             </Link>
 
             <Link
