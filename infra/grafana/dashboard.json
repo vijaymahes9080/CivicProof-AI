@@ -1,0 +1,106 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "API Request Throughput (QPS)",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(rate(civicproof_http_requests_total[1m]))",
+          "legendFormat": "Total QPS"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "id": 2,
+      "title": "Active Concurrent Queries",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "civicproof_active_requests",
+          "legendFormat": "Active Connections"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "id": 3,
+      "title": "Total PII Redactions",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(civicproof_pii_redactions_total)",
+          "legendFormat": "PII Entities Sanitized"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
+      "id": 4,
+      "title": "Verified Government Sources",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "civicproof_registered_sources_count",
+          "legendFormat": "Active Sources"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "id": 5,
+      "title": "Latency Distribution (P95 & P99)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(civicproof_http_request_duration_seconds_bucket[5m])) by (le))",
+          "legendFormat": "P95 Latency (s)"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(civicproof_http_request_duration_seconds_bucket[5m])) by (le))",
+          "legendFormat": "P99 Latency (s)"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "id": 6,
+      "title": "Eligibility Engine Evaluation Rate",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(civicproof_eligibility_evaluations_total[5m])) by (is_eligible)",
+          "legendFormat": "Eligible: {{is_eligible}}"
+        }
+      ]
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["civicproof", "government", "scholarships", "production"],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "title": "CivicProof AI - Production Observability Dashboard",
+  "uid": "civicproof-prod-overview",
+  "version": 1
+}
