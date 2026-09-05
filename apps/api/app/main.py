@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 
 from .core.config import settings
 from .db.session import init_db
-from .api.routers import auth, schemes, assistant, eligibility, checklist, sources, alerts, health
+from .api.routers import auth, schemes, assistant, eligibility, checklist, sources, alerts, health, institutions
 
 # Configure Logging
 logging.basicConfig(
@@ -72,6 +72,7 @@ app.include_router(eligibility.router, prefix=settings.API_V1_STR)
 app.include_router(checklist.router, prefix=settings.API_V1_STR)
 app.include_router(sources.router, prefix=settings.API_V1_STR)
 app.include_router(alerts.router, prefix=settings.API_V1_STR)
+app.include_router(institutions.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
