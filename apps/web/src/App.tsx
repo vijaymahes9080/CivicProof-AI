@@ -17,6 +17,7 @@ import { BenefitCalculatorPage } from './pages/BenefitCalculatorPage';
 import { IntegrityCheckPage } from './pages/IntegrityCheckPage';
 import { InstitutionValidatorPage } from './pages/InstitutionValidatorPage';
 import { DistrictOfficesPage } from './pages/DistrictOfficesPage';
+import { DecisionTreePage } from './pages/DecisionTreePage';
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
@@ -46,6 +47,7 @@ export const App: React.FC = () => {
             <Route path="/doc-verify" element={<IntegrityCheckPage language={language} />} />
             <Route path="/institutions" element={<InstitutionValidatorPage language={language} />} />
             <Route path="/districts" element={<DistrictOfficesPage language={language} />} />
+            <Route path="/decision-tree" element={<DecisionTreePage language={language} />} />
             <Route path="/admin" element={<AdminReviewPage language={language} />} />
           </Routes>
         </main>
