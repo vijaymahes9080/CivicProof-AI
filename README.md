@@ -3,6 +3,10 @@
 > **Evidence-Grounded Public-Service Assistant for Indian Citizens & Scholarships**  
 > *Tamil:* இந்தியக் குடிமக்களுக்கான ஆதாரபூர்வ அரசு உதவித்தொகை வழிகாட்டி
 
+<div align="center">
+
+![CivicProof AI Light Theme Banner](docs/assets/hero_banner_light.jpg)
+
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![React 18/19](https://img.shields.io/badge/React-18%2F19-61dafb?logo=react)](https://react.dev/)
@@ -15,6 +19,8 @@
 [![Grafana](https://img.shields.io/badge/Grafana-Monitoring-f46800?logo=grafana)](https://grafana.com/)
 [![MCP SDK](https://img.shields.io/badge/MCP-Protocol_v1.0-orange)](https://modelcontextprotocol.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+</div>
 
 ---
 
@@ -34,7 +40,13 @@ CivicProof AI is a production-grade, open-source public service platform designe
 
 ## 🌟 Innovation & Feature Highlights (v1.1.0-innovation)
 
-CivicProof AI contains an end-to-end suite of 35 production modules across AI, Security, Accessibility, and Cloud Infrastructure:
+<div align="center">
+
+![CivicProof AI Innovation & Feature Suite](docs/assets/features_showcase_light.jpg)
+
+</div>
+
+CivicProof AI contains an end-to-end suite of **35 production modules** across AI, Security, Accessibility, and Cloud Infrastructure:
 
 ### 🤖 AI & Model Context Protocol (MCP) Server (11 Public Tools)
 1. **`search_official_sources`**: Semantic & hybrid search over official government gazettes.
@@ -73,11 +85,36 @@ CivicProof AI contains an end-to-end suite of 35 production modules across AI, S
 - **Maharashtra:** MahaDBT Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulkh Shishyavrutti (EBC).
 - **Uttar Pradesh:** UP Saksham Post-Matric Scholarship & Fee Reimbursement Online System.
 
-### 📊 Observability & Cloud Deployment
-- **OpenTelemetry Tracing**: Distributed context propagation and request tracing across FastAPI microservices.
-- **Prometheus Metrics**: Dedicated scraping endpoint `/metrics` for request counts, latency histograms, and active connections.
-- **Grafana Dashboard**: Pre-configured JSON dashboard for HTTP latency, 4xx/5xx error rates, and security tripwires.
-- **Kubernetes & Helm Chart**: Production-ready deployment manifests with horizontal pod autoscaling and ingress controllers.
+---
+
+## 🏗️ System Architecture
+
+<div align="center">
+
+![CivicProof AI System Architecture & MCP Engine](docs/assets/architecture_light.jpg)
+
+</div>
+
+CivicProof AI separates deterministic business rules from probabilistic LLM generation to ensure **zero hallucination** and strict regulatory compliance:
+
+```
+Citizen Query / Profile / Voice
+               │
+               ▼
+   [ WCAG 2.1 AAA React App ] ◄──► [ Offline PWA Cache ]
+               │
+               ▼
+      [ FastAPI Gateway ] ────► [ PII Scrubber & SSRF Guard ]
+               │
+      ┌────────┴────────┬───────────────────┐
+      ▼                 ▼                   ▼
+[ Hybrid RAG ]   [ Deterministic ]   [ Python MCP Server ]
+(Qdrant Vector)  (Pydantic Rules)    (11 Public Tools)
+      │                 │                   │
+      └────────┬────────┴───────────────────┘
+               ▼
+[ Audited Response with Official Citations ]
+```
 
 ---
 
