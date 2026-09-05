@@ -1,16 +1,15 @@
-"""
-CivicProof AI - Scholarship Phishing & Fraud Detector
+"""CivicProof AI - Scholarship Phishing & Fraud Detector
 """
 import re
 from typing import Dict, Any, List
 from .allowlist import is_domain_allowed
 
 PHISHING_PATTERNS = [
-    (re.compile(r'registration\s+fee|processing\s+fee|pay\s+rs\.?\s*\d+|deposit\s+money', re.IGNORECASE), "Govt scholarships NEVER charge application or registration fees.", "HIGH"),
-    (re.compile(r'send\s+otp|share\s+password|atm\s+pin|upi\s+pin', re.IGNORECASE), "Official portals NEVER ask for banking OTP, UPI PIN, or passwords.", "CRITICAL"),
-    (re.compile(r'guaranteed\s+selection|100%\s+approval|direct\s+sanction\s+without\s+exam', re.IGNORECASE), "No intermediary can guarantee scholarship disbursals outside statutory merit lists.", "HIGH"),
-    (re.compile(r'whatsapp\s+group|telegram\s+channel\s+for\s+funds|dm\s+on\s+whatsapp', re.IGNORECASE), "Official state & central government communications do not disburse scholarships via WhatsApp or Telegram groups.", "MEDIUM"),
-    (re.compile(r'\.xyz|\.top|\.club|\.online|\.site|\.free|\.tk|\.ga', re.IGNORECASE), "Suspicious top-level domain. Official portals strictly use .gov.in, .nic.in, or .ac.in.", "CRITICAL")
+    (re.compile(r'registration\s+fee|processing\s+fee|pay\s+rs\.?\s*\d+|deposit\s+money|application\s+fee\s+of\s+rs', re.IGNORECASE), "Govt scholarships NEVER charge application or registration fees.", "HIGH"),
+    (re.compile(r'send\s+otp|share\s+password|atm\s+pin|upi\s+pin|bank\s+password', re.IGNORECASE), "Official portals NEVER ask for banking OTP, UPI PIN, or passwords.", "CRITICAL"),
+    (re.compile(r'guaranteed\s+selection|100%\s+approval|guaranteed\s+scholarship|direct\s+sanction\s+without\s+exam', re.IGNORECASE), "No intermediary can guarantee scholarship disbursals outside statutory merit lists.", "HIGH"),
+    (re.compile(r'whatsapp|telegram\s+channel|telegram\s+group|dm\s+on\s+telegram', re.IGNORECASE), "Official state & central government communications do not disburse scholarships via WhatsApp or Telegram groups.", "MEDIUM"),
+    (re.compile(r'\.xyz|\.top|\.club|\.online|\.site|\.free|\.tk|\.ga|\.biz', re.IGNORECASE), "Suspicious top-level domain. Official portals strictly use .gov.in, .nic.in, or .ac.in.", "CRITICAL")
 ]
 
 
