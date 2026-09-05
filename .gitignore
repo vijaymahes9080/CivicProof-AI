@@ -1,11 +1,98 @@
-/vendor/
-node_modules/
-dist/
+# ==========================================
+# CivicProof AI - Comprehensive .gitignore
+# ==========================================
+
+# Environment & Secrets
 .env
 .env.local
-*.log
-*.db
-.pytest_cache/
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# Python & Virtual Environments
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+env/
+
+# Pytest & Testing
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+htmlcov/
+
+# Node.js, Web & Vite
+node_modules/
+.npm
+apps/web/dist/
+apps/web/dist-ssr/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Composer / PHP
+/vendor/
+
+# Databases, Storage & Vector DB
+*.db
+*.sqlite
+*.sqlite3
+data/
+qdrant_storage/
+
+# Logs
+*.log
+logs/
+
+# IDE & Editor Configurations
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS Generated Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
